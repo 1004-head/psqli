@@ -1,7 +1,35 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+  <nav class="navbar navbar-expand-lg bg-light">
+    <div class="container-fluid">
+      <router-link to="/" class="navbar-brand">PSQLI</router-link>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <router-link to="/" class="nav-link active" aria-current="page">Home</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link to="/about" class="nav-link">About</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link to="/challenge" class="nav-link">Challenge</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link to="/score" class="nav-link">Score</router-link>
+          </li>
+        </ul>
+        <ul class="d-flex navbar-nav mb-2 mb-lg-0">
+          <li class="nav-item">
+            <router-link to="/login" class="nav-link" >login</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link to="/register" class="nav-link" >register</router-link>
+          </li>
+        </ul>
+      </div>
+    </div>
   </nav>
   <router-view/>
 </template>

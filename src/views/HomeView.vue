@@ -1,7 +1,6 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <HelloWorld msg="Welcome to PSQLI service!"/>
   </div>
 </template>
 
@@ -16,3 +15,9 @@ export default {
   }
 }
 </script>
+
+<style>
+.home{
+  margin-top: 100px;
+}
+</style>
