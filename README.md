@@ -1,5 +1,8 @@
 # psqli
 
+## Project introduction
+- PNU DB class term project, develop the sql-injection study platform on web
+
 ## Project setup
 ```
 npm install
