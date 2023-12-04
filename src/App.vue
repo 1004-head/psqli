@@ -20,7 +20,12 @@
             <router-link to="/score" class="nav-link">Score</router-link>
           </li>
         </ul>
-        <ul class="d-flex navbar-nav mb-2 mb-lg-0">
+        <ul v-if="isLogin() == true" class="d-flex navbar-nav mb-2 mb-lg-0">
+          <li>
+            <router-link to="/profile" class="nav-link">profile</router-link>
+          </li>
+        </ul>
+        <ul v-else class="d-flex navbar-nav mb-2 mb-lg-0">
           <li class="nav-item">
             <router-link to="/login" class="nav-link" >login</router-link>
           </li>
@@ -56,3 +61,19 @@ nav a.router-link-exact-active {
   color: #42b983;
 }
 </style>
+
+<script>
+export default{
+  methods:{
+    isLogin(){
+      var token = localStorage.getItem("jwt");
+      console.log(typeof token);
+      if (typeof token === "string") {
+        return true;
+      }else{
+        return false;
+      }
+    }
+  }
+}
+</script>

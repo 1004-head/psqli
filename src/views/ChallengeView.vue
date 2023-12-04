@@ -1,44 +1,27 @@
 <template>
   <div class="board-list">
-    <div class="common-buttons">
+    <div v-if="isMaker() == true" class="common-buttons">
       <button type="button" class="w3-button w3-round w3-blue-gray" v-on:click="fnWrite">등록</button>
+    </div>
+    <div v-else class="common-buttons">
+      
     </div>
     <table class="w3-table-all">
       <thead>
       <tr>
         <th>No</th>
         <th>제목</th>
-        <th>작성자</th>
-        <th>등록일시</th>
+        <th>점수</th>
       </tr>
       </thead>
       <tbody>
       <tr v-for="(row, idx) in list" :key="idx">
-        <td>{{ row.idx }}</td>
-        <td><a v-on:click="fnView(`${row.idx}`)">{{ row.title }}</a></td>
-        <td>{{ row.author }}</td>
-        <td>{{ row.created_at }}</td>
+        <td>{{ row[0] }}</td>
+        <td><a v-on:click="fnView(`${row[0]}`)">{{ row[1] }}</a></td>
+        <td>{{ row[2] }}</td>
       </tr>
       </tbody>
     </table>
-    <div class="pagination w3-bar w3-padding-16 w3-small" v-if="paging.total_list_cnt > 0">
-      <span class="pg">
-      <a href="javascript:;" @click="fnPage(1)" class="first w3-button w3-border">&lt;&lt;</a>
-      <a href="javascript:;" v-if="paging.start_page > 10" @click="fnPage(`${paging.start_page-1}`)"
-         class="prev w3-button w3-border">&lt;</a>
-      <template v-for=" (n,index) in paginavigation()">
-          <template v-if="paging.page==n">
-              <strong class="w3-button w3-border w3-green" :key="index">{{ n }}</strong>
-          </template>
-          <template v-else>
-              <a class="w3-button w3-border" href="javascript:;" @click="fnPage(`${n}`)" :key="index">{{ n }}</a>
-          </template>
-      </template>
-      <a href="javascript:;" v-if="paging.total_page_cnt > paging.end_page"
-         @click="fnPage(`${paging.end_page+1}`)" class="next w3-button w3-border">&gt;</a>
-      <a href="javascript:;" @click="fnPage(`${paging.total_page_cnt}`)" class="last w3-button w3-border">&gt;&gt;</a>
-      </span>
-    </div>
   </div>
 </template>
 
@@ -48,30 +31,6 @@ export default {
     return {
       requestBody: {}, //리스트 페이지 데이터전송
       list: {}, //리스트 데이터
-      no: '', //게시판 숫자처리
-      paging: {
-        block: 0,
-        end_page: 0,
-        next_block: 0,
-        page: 0,
-        page_size: 0,
-        prev_block: 0,
-        start_index: 0,
-        start_page: 0,
-        total_block_cnt: 0,
-        total_list_cnt: 0,
-        total_page_cnt: 0,
-      }, //페이징 데이터
-      page: this.$route.query.page ? this.$route.query.page : 1,
-      size: this.$route.query.size ? this.$route.query.size : 10,
-      keyword: this.$route.query.keyword,
-      paginavigation: function () { //페이징 처리 for문 커스텀
-        let pageNumber = [] //;
-        let start_page = this.paging.start_page;
-        let end_page = this.paging.end_page;
-        for (let i = start_page; i <= end_page; i++) pageNumber.push(i);
-        return pageNumber;
-      }
     }
   },
   mounted() {
@@ -79,16 +38,12 @@ export default {
   },
   methods: {
     fnGetList() {
-      this.requestBody = { // 데이터 전송
-        keyword: this.keyword,
-        page: this.page,
-        size: this.size
-    }
-    this.$axios.get(this.$serverUrl + "/challenge", {
-        params: this.requestBody,
-        headers: {}
+    this.$axios.get(this.$serverUrl + "/challenge/get", {
+        headers: {
+          "Authorization": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySUQiOlsxXSwibmFtZSI6ImphZXllb2wiLCJuaWNrbmFtZSI6Im5pY2V0YXVyZW4iLCJpc0FkbWluIjp0cnVlLCJpc01ha2VyIjpmYWxzZX0.hIlD_J3lZ7rPZg4K94TfkXWHzmP_h4ikR-06hccfUJ0"
+        }
       }).then((res) => {      
-
+        console.log(res.data[0][0]);
         this.list = res.data  //서버에서 데이터를 목록으로 보내므로 바로 할당하여 사용할 수 있다.
 
       }).catch((err) => {
@@ -100,20 +55,29 @@ export default {
     fnView(idx) {
       this.requestBody.idx = idx
       this.$router.push({
-        path: './detail',
+        path: '/challenge/detail',
         query: this.requestBody
       })
     },
     fnWrite() {
       this.$router.push({
-        path: './add'
+        path: '/challenge/add'
       })
     },
-    fnPage(n) {
-      if (this.page !== n) {
-        this.page = n
-        this.fnGetList()
-      }
+    isMaker(){
+      const parseJwt = (token) => {
+        var base64Url = token.split('.')[1];
+        var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+
+        return JSON.parse(jsonPayload);
+      };
+      var token = localStorage.getItem("jwt");
+      var deJWT = parseJwt(token);
+      console.log(deJWT['isMaker']);
+      return deJWT['isMaker'];
     }
   }
 }
