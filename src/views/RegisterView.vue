@@ -18,6 +18,18 @@
             <div class="mb-3">
               <input type="password" class="form-control" id="password" v-model="password" placeholder="password">
             </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="inlineRadioOptions" id="user" value="user" checked>
+              <label class="form-check-label" for="user">User</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="inlineRadioOptions" id="maker" v-model="isMaker" value="true">
+              <label class="form-check-label" for="maker">Maker</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="inlineRadioOptions" id="admin" v-model="isAdmin" value="true">
+              <label class="form-check-label" for="admin">Admin</label>
+            </div>
             <div class="text-center"><button type="submit" class="btn btn-color px-5 mb-5 w-100">Register</button></div>
           </form>
         </div>
@@ -47,8 +59,8 @@ export default {
       nickname: '',
       loginID: '',
       password: '',
-      isAdmin: false,
       isMaker: false,
+      isAdmin: false,
     }
   },
   methods: {
@@ -58,10 +70,11 @@ export default {
         nickname: this.nickname,
         loginID: this.loginID,
         password: this.password,
-        isAdmin: false,
-        isMaker: false
+        isAdmin: this.isAdmin,
+        isMaker: this.isMaker
       };
-
+      
+      console.log(data);
       try {
         this.$axios.post(this.$serverUrl + "/auth/register", JSON.stringify(data), {
             headers: {
@@ -74,6 +87,7 @@ export default {
               //this.$store.commit("login", res.data);
               console.log(res.data);
               window.localStorage.setItem("jwt", res.data["Authorization"]);
+              
               this.$router.replace("/").then(()=>{window.location.reload();});
             }
           });

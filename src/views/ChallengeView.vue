@@ -1,11 +1,12 @@
 <template>
   <div class="board-list">
-    <div v-if="isMaker() == true" class="common-buttons">
+    <div v-if="isMaker()" class="common-buttons">
       <button type="button" class="w3-button w3-round w3-blue-gray" v-on:click="fnWrite">등록</button>
     </div>
-    <div v-else class="common-buttons">
-      
+    <div v-if="isAdmin()" class="common-buttons">
+      <button type="button" class="w3-button w3-round w3-red" v-on:click="fnDelete">삭제</button>
     </div>
+    
     <table class="w3-table-all">
       <thead>
       <tr>
@@ -38,12 +39,13 @@ export default {
   },
   methods: {
     fnGetList() {
+    var token = localStorage.getItem("jwt");
+    
     this.$axios.get(this.$serverUrl + "/challenge/get", {
         headers: {
-          "Authorization": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySUQiOlsxXSwibmFtZSI6ImphZXllb2wiLCJuaWNrbmFtZSI6Im5pY2V0YXVyZW4iLCJpc0FkbWluIjp0cnVlLCJpc01ha2VyIjpmYWxzZX0.hIlD_J3lZ7rPZg4K94TfkXWHzmP_h4ikR-06hccfUJ0"
+          "Authorization": token
         }
       }).then((res) => {      
-        console.log(res.data[0][0]);
         this.list = res.data  //서버에서 데이터를 목록으로 보내므로 바로 할당하여 사용할 수 있다.
 
       }).catch((err) => {
@@ -52,13 +54,17 @@ export default {
         }
       })
     },
-    fnView(idx) {
-      this.requestBody.idx = idx
-      this.$router.push({
-        path: '/challenge/detail',
-        query: this.requestBody
-      })
-    },
+    fnDelete() {
+        if (!confirm("삭제하시겠습니까?")) return
+  
+        this.$axios.delete(this.$serverUrl + '/challenge/delete', {})
+            .then(() => {
+              alert('삭제되었습니다.')
+              this.$router.replace("/challenge").then(()=>{window.location.reload();});
+            }).catch((err) => {
+          console.log(err);
+        })
+      },
     fnWrite() {
       this.$router.push({
         path: '/challenge/add'
@@ -76,8 +82,21 @@ export default {
       };
       var token = localStorage.getItem("jwt");
       var deJWT = parseJwt(token);
-      console.log(deJWT['isMaker']);
       return deJWT['isMaker'];
+    },
+    isAdmin(){
+      const parseJwt = (token) => {
+        var base64Url = token.split('.')[1];
+        var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+
+        return JSON.parse(jsonPayload);
+      };
+      var token = localStorage.getItem("jwt");
+      var deJWT = parseJwt(token);
+      return deJWT['isAdmin'];
     }
   }
 }

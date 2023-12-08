@@ -9,12 +9,28 @@ const routes = [
     component: HomeView
   },
   {
-    path: '/about',
-    name: 'about',
+    path: '/post',
+    name: 'post',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/PostView.vue')
+  },
+  {
+    path: '/post/detail',
+    name: 'PostDetail',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../views/PostDetailView.vue')
+  },
+  {
+    path: '/post/add',
+    name: 'PostAdd',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../views/PostAddView.vue')
   },
   {
     path: '/challenge',
@@ -42,11 +58,27 @@ const routes = [
   },
   {
     path: '/score',
-    name: 'score',
+    name: 'Score',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/ScoreView.vue')
+  },
+  {
+    path: '/user/detail',
+    name: 'UserDetail',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../views/UserDetailView.vue')
+  },
+  {
+    path: '/users',
+    name: 'Users',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../views/UsersView.vue')
   },
   {
     path: '/login',

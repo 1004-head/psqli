@@ -1,8 +1,7 @@
 <template>
     <div class="board-detail">
-      <div v-if="isMaker() == true" class="common-buttons">
+      <div v-if="isMaker() || isAdmin()" class="common-buttons">
         <button type="button" class="w3-button w3-round w3-red" v-on:click="fnDelete">삭제</button>&nbsp;
-        <button type="button" class="w3-button w3-round w3-gray" v-on:click="fnList">목록</button>
       </div>
       <div class="board-contents">
         <h3>{{ title }}</h3>
@@ -72,20 +71,13 @@ a{
           }
         })
       },
-      fnList() {
-        delete this.requestBody.idx
-        this.$router.push({
-          path: './list',
-          query: this.requestBody
-        })
-      },
       fnDelete() {
         if (!confirm("삭제하시겠습니까?")) return
   
-        this.$axios.delete(this.$serverUrl + '/challenge/' + this.idx, {})
+        this.$axios.delete(this.$serverUrl + '/challenge/delete/' + this.idx, {})
             .then(() => {
               alert('삭제되었습니다.')
-              this.fnList();
+              this.$router.replace("/challenge").then(()=>{window.location.reload();});
             }).catch((err) => {
           console.log(err);
         })
@@ -108,6 +100,20 @@ a{
         return false;
       }
     },
+    isAdmin(){
+      const parseJwt = (token) => {
+        var base64Url = token.split('.')[1];
+        var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+
+        return JSON.parse(jsonPayload);
+      };
+      var token = localStorage.getItem("jwt");
+      var deJWT = parseJwt(token);
+      return deJWT['isAdmin'];
+    },
     answerSubmit() {
       var answerData = {
         title: JSON.parse(window.localStorage.getItem("challenge"))[1],
@@ -115,7 +121,22 @@ a{
         mid: JSON.parse(window.localStorage.getItem("challenge"))[4]
       };
 
-      var token = localStorage.getItem("jwt");
+      function getWithExpiry(key){
+        const itemStr = localStorage.getItem(key)
+
+        if(!itemStr){
+          return null
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+        if(now.getTime() > item.expiry){
+          localStorage.removeItem(key)
+          return null
+        }
+        return item.value
+      }
+      var token = getWithExpiry("jwt");
+      console.log(token);
       
       try {
         this.$axios
@@ -131,10 +152,6 @@ a{
               //window.localStorage.setItem("jwt", res.data["Authorization"]);
               //this.$router.replace("/").then(()=>{window.location.reload();});
               alert(res.data);
-            }
-            if (res.status === 401){
-              alert(res.data);
-              window.location.reload();
             }
           });
       } catch (error) {

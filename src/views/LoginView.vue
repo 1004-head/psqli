@@ -12,6 +12,18 @@
             <div class="mb-3">
               <input type="password" class="form-control" id="password" v-model="password" placeholder="password">
             </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="inlineRadioOptions" id="user" value="user" checked>
+              <label class="form-check-label" for="user">User</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="inlineRadioOptions" id="maker" v-model="isMaker" value="true">
+              <label class="form-check-label" for="maker">Maker</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="inlineRadioOptions" id="admin" v-model="isAdmin" value="true">
+              <label class="form-check-label" for="admin">Admin</label>
+            </div>
             <div class="text-center"><button type="submit" class="btn btn-color px-5 mb-5 w-100">Login</button></div>
             <div id="emailHelp" class="form-text text-center mb-5 text-dark">Not
               Registered? <a href="/register" class="text-dark fw-bold"> Create an

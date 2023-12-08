@@ -1,11 +1,15 @@
 <template>
   <div class="board-list">
+    <div v-if="isAdmin()" class="common-buttons">
+      <button type="button" class="w3-button w3-round w3-blue-gray" v-on:click="fnWrite">등록</button>
+    </div>
+    
     <table class="w3-table-all">
       <thead>
       <tr>
         <th>No</th>
-        <th>유저</th>
-        <th>점수</th>
+        <th>제목</th>
+        <th>작성자</th>
       </tr>
       </thead>
       <tbody>
@@ -33,15 +37,14 @@ export default {
   methods: {
     fnGetList() {
     var token = localStorage.getItem("jwt");
-
-    this.$axios.get(this.$serverUrl + "/score/all", {
+    
+    this.$axios.get(this.$serverUrl + "/post/get", {
         headers: {
           "Authorization": token
         }
       }).then((res) => {      
-        console.log(res.data[0][0]);
         this.list = res.data  //서버에서 데이터를 목록으로 보내므로 바로 할당하여 사용할 수 있다.
-
+        console.log(this.list)
       }).catch((err) => {
         if (err.message.indexOf('Network Error') > -1) {
           alert('네트워크가 원활하지 않습니다.\n잠시 후 다시 시도해주세요.')
@@ -51,9 +54,28 @@ export default {
     fnView(idx) {
       this.requestBody.idx = idx
       this.$router.push({
-        path: '/user/detail/',
+        path: '/post/detail',
         query: this.requestBody
       })
+    },
+    fnWrite() {
+      this.$router.push({
+        path: '/post/add'
+      })
+    },
+    isAdmin(){
+      const parseJwt = (token) => {
+        var base64Url = token.split('.')[1];
+        var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+
+        return JSON.parse(jsonPayload);
+      };
+      var token = localStorage.getItem("jwt");
+      var deJWT = parseJwt(token);
+      return deJWT['isAdmin'];
     }
   }
 }
