@@ -138,6 +138,7 @@ a{
               //window.localStorage.setItem("jwt", res.data["Authorization"]);
               //this.$router.replace("/").then(()=>{window.location.reload();});
               alert(res.data);
+              this.$router.replace("/challenge").then(()=>{window.location.reload();});
             }
           });
       } catch (error) {
