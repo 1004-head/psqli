@@ -26,8 +26,8 @@
             </thead>
             <tbody>
                 <tr v-for="(row, idx) in list" :key="idx">
+                    <td>{{ row[2] }}</td>
                     <td>{{ row[3] }}</td>
-                    <td>{{ row[4] }}</td>
                 </tr>
             </tbody>
         </table>
@@ -41,9 +41,9 @@
             </thead>
             <tbody>
                 <tr v-for="(row, idx) in list" :key="idx">
+                    <td>{{ row[2] }}</td>
                     <td>{{ row[3] }}</td>
                     <td>{{ row[4] }}</td>
-                    <td>{{ row[5] }}</td>
                 </tr>
             </tbody>
         </table>
