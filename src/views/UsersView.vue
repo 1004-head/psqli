@@ -39,7 +39,7 @@ export default {
     fnGetList() {
     var token = localStorage.getItem("jwt");
     
-    this.$axios.get(this.$serverUrl + "/users/all", {
+    this.$axios.get("/api/users/all", {
         headers: {
           "Authorization": token
         }
@@ -56,7 +56,7 @@ export default {
     fnDelete() {
         if (!confirm("삭제하시겠습니까?")) return
   
-        this.$axios.delete(this.$serverUrl + '/users/all', {})
+        this.$axios.delete('/api/users/all', {})
             .then(() => {
               alert('삭제되었습니다.')
               this.$router.replace("/users").then(()=>{window.location.reload();});

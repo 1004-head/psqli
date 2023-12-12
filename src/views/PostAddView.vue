@@ -37,7 +37,7 @@ export default {
             })
         },
         fnSave() {
-            let apiUrl = this.$serverUrl + '/post/add'
+            let apiUrl = '/api/post/add'
             
             var token = localStorage.getItem("jwt");
     

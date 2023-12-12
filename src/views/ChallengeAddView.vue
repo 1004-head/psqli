@@ -43,7 +43,7 @@ export default {
             })
         },
         fnSave() {
-            let apiUrl = this.$serverUrl + '/challenge/add'
+            let apiUrl = '/api/challenge/add'
             
             var token = localStorage.getItem("jwt");
     

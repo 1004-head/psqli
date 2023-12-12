@@ -57,7 +57,7 @@ a{
     },
     methods: {
       fnGetView() {
-        this.$axios.get(this.$serverUrl + '/challenge/get/' + this.idx, {
+        this.$axios.get('/api/challenge/get/' + this.idx, {
           params: this.requestBody
         }).then((res) => {
           this.title = res.data[1]
@@ -74,7 +74,7 @@ a{
       fnDelete() {
         if (!confirm("삭제하시겠습니까?")) return
   
-        this.$axios.delete(this.$serverUrl + '/challenge/delete/' + this.idx, {})
+        this.$axios.delete('/api/challenge/delete/' + this.idx, {})
             .then(() => {
               alert('삭제되었습니다.')
               this.$router.replace("/challenge").then(()=>{window.location.reload();});
@@ -140,7 +140,7 @@ a{
       
       try {
         this.$axios
-          .post(this.$serverUrl + "/score/check_answer", JSON.stringify(answerData), {
+          .post("/api/score/check_answer", JSON.stringify(answerData), {
             headers: {
               "Content-Type": `application/json`,
               "Authorization": token

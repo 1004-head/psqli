@@ -2,6 +2,7 @@
   <div class="board-list">
     <div v-if="isAdmin()" class="common-buttons">
       <button type="button" class="w3-button w3-round w3-blue-gray" v-on:click="fnWrite">등록</button>
+      <button type="button" class="w3-button w3-round w3-red" v-on:click="fnDelete">삭제</button>
     </div>
     
     <table class="w3-table-all">
@@ -38,7 +39,7 @@ export default {
     fnGetList() {
     var token = localStorage.getItem("jwt");
     
-    this.$axios.get(this.$serverUrl + "/post/get", {
+    this.$axios.get("/api/post/get", {
         headers: {
           "Authorization": token
         }
@@ -56,6 +57,17 @@ export default {
       this.$router.push({
         path: '/post/detail',
         query: this.requestBody
+      })
+    },
+    fnDelete(){
+      if(!confirm("삭제하시겠습니까?")) return
+
+      this.$axios.delete('/api/post/delete', {})
+          .then(() => {
+            alert('삭제되었습니다.')
+            this.$router.replace("/post").then(()=>{window.location.reload();});
+          }).catch((err) => {
+            console.log(err);
       })
     },
     fnWrite() {

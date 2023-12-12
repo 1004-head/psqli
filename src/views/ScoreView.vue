@@ -34,7 +34,7 @@ export default {
     fnGetList() {
     var token = localStorage.getItem("jwt");
 
-    this.$axios.get(this.$serverUrl + "/score/all", {
+    this.$axios.get("/api/score/all", {
         headers: {
           "Authorization": token
         }

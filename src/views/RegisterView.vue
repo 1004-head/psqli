@@ -76,7 +76,7 @@ export default {
       
       console.log(data);
       try {
-        this.$axios.post(this.$serverUrl + "/auth/register", JSON.stringify(data), {
+        this.$axios.post("/api/auth/register", JSON.stringify(data), {
             headers: {
               "Content-Type": `application/json`,
             },

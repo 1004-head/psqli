@@ -101,17 +101,17 @@
       fnDelete() {
         if (!confirm("삭제하시겠습니까?")) return
   
-        this.$axios.delete(this.$serverUrl + '/challenge/delete/' + this.idx, {})
+        this.$axios.delete('/api/users/' + this.idx, {})
             .then(() => {
               alert('삭제되었습니다.')
-              this.$router.replace("/challenge").then(()=>{window.location.reload();});
+              this.$router.replace("/users").then(()=>{window.location.reload();});
             }).catch((err) => {
           console.log(err);
         })
       },
       fnGetView() {
         if(this.role == "maker"){
-          this.$axios.get(this.$serverUrl + '/users/maker/' + this.idx, {
+          this.$axios.get('/api/users/maker/' + this.idx, {
           }).then((res) => {
               console.log(res.data)
               this.name = res.data[0][0]
@@ -125,7 +125,7 @@
             }
           })
         }else if(this.role == "admin"){
-          this.$axios.get(this.$serverUrl + '/users/admin/' + this.idx, {
+          this.$axios.get('/api/users/admin/' + this.idx, {
           }).then((res) => {
               console.log(res.data)
               this.name = res.data[0][0]
@@ -139,7 +139,7 @@
             }
           })
         }else{
-          this.$axios.get(this.$serverUrl + '/score/' + this.idx, {
+          this.$axios.get('/api/score/' + this.idx, {
             params: this.requestBody
           }).then((res) => {
               console.log(res.data)

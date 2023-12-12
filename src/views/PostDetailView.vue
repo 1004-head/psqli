@@ -44,7 +44,7 @@ a{
     },
     methods: {
       fnGetView() {
-        this.$axios.get(this.$serverUrl + '/post/get/' + this.idx, {
+        this.$axios.get('/api/post/get/' + this.idx, {
           params: this.requestBody
         }).then((res) => {
           this.title = res.data[1]
@@ -59,7 +59,7 @@ a{
       fnDelete() {
         if (!confirm("삭제하시겠습니까?")) return
   
-        this.$axios.delete(this.$serverUrl + '/post/delete/' + this.idx, {})
+        this.$axios.delete('/api/post/delete/' + this.idx, {})
             .then(() => {
               alert('삭제되었습니다.')
               this.$router.replace("/post").then(()=>{window.location.reload();});

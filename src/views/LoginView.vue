@@ -69,7 +69,7 @@ export default {
 
       try {
         this.$axios
-          .post(this.$serverUrl + "/auth/login", JSON.stringify(data), {
+          .post("/api/auth/login", JSON.stringify(data), {
             headers: {
               "Content-Type": `application/json`,
             },
