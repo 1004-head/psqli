@@ -15,6 +15,7 @@
       </div>
       <div class="board-contents">
         <strong v-if="role == 'admin'">Posts</strong>
+        <strong v-else-if="role == 'maker'">Challenges</strong>
         <strong v-else>Solves</strong>
         <table v-if="role == 'admin'" class="w3-table-all">
           <thead>
