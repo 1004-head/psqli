@@ -65,6 +65,13 @@ export default {
           console.log(err);
         })
       },
+    fnView(idx){
+       this.requestBody.idx = idx
+       this.$router.push({
+          path: '/challenge/detail',
+          query: this.requestBody
+       })
+    },
     fnWrite() {
       this.$router.push({
         path: '/challenge/add'
